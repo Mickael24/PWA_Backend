@@ -73,6 +73,30 @@ const UsersRouter = () => {
     );
 
   router
+    .route("/perfil")
+    .get(
+      Users.autorize([scopes.NonMember, scopes.Member]),
+      function (req, res, next) {
+        console.log("get the perfil of user");
+        // the id is get when the token has decoded
+        let userId = req.id;
+        Users.findUserById(userId)
+          .then((user) => {
+            res.status(200);
+            res.send({
+              data: user
+            });
+            next();
+          })
+          .catch((err) => {
+            console.log('Perfil', err);
+            res.status(404);
+            next();
+          });
+      }
+    );
+
+  router
     .route("/:userId")
     .put(Users.autorize([scopes.Admin]), function (req, res, next) {
       console.log("update a member by id");
