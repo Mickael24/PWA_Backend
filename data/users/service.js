@@ -87,7 +87,7 @@ function UserService(UserModel) {
     });
   }
 
-  function findUser({ name, password }) {
+  function findUser({ name, password, isQrCode }) {
     return new Promise(function (resolve, reject) {
       UserModel.findOne({ name }, function (err, user) {
         if (err) reject(err);
@@ -99,6 +99,10 @@ function UserService(UserModel) {
         resolve(user);
       });
     }).then((user) => {
+      if(isQrCode) {
+        return user.password === password ? Promise.resolve(user): Promise.reject("User not valid");
+      }
+
       return comparePassword(password, user.password).then((match) => {
         if (!match) return Promise.reject("User not valid");
         return Promise.resolve(user);

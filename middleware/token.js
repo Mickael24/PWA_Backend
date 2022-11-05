@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
 
     Users.verifyToken(token)
       .then((decoded) => {
+        req.id = decoded.id;
         req.roleUser = decoded.role;
         next();
       })
