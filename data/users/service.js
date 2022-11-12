@@ -32,7 +32,6 @@ function UserService(UserModel) {
   }
 
   function createToken(user) {
-    console.log('CreateToken', user);
     let token = jwt.sign({ id: user._id, name: user.name, role: user.role.scope}, config.secret, {
       expiresIn: config.expiresPassword,
     });
@@ -148,8 +147,6 @@ function UserService(UserModel) {
     return (request, response, next) => {
 
       const { roleUser } = request; //Este request só tem o roleUser porque o adicionamos no ficheiro players
-      console.log(roleUser);
-      console.log(scopes);
       const hasAutorization = scopes.some(scope => roleUser.includes(scope));
 
       if (roleUser && hasAutorization) {

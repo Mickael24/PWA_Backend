@@ -1,10 +1,11 @@
 const express = require("express");
 const http = require("http");
 const mongoose = require("mongoose");
+const path = require('path');
 
 const config = require('./config');
 
-const hostname = "127.0.0.1";
+const hostname = "localhost";
 const port = 5000;
 
 mongoose.connect(config.db)
@@ -14,6 +15,7 @@ mongoose.connect(config.db)
 let router = require('./router');
 var app = express();
 app.use(router.init());
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 const server = http.Server(app);
 
