@@ -2,6 +2,7 @@ function MemberService(MemberModel) {
   let service = {
     create,
     findAll,
+    findById,
     findMemberByTaxNumber,
     update,
     removeById,
@@ -23,6 +24,19 @@ function MemberService(MemberModel) {
           message: "Member Created",
           member: model,
         });
+      });
+    });
+  }
+
+  function findById(id) {
+    return new Promise(function (resolve, reject) {
+      MemberModel.findOne({ id: id }, function (err, member) {
+        if (err) reject(err);
+
+        if (!member) {
+          reject("Member dont found");
+        }
+        resolve(member);
       });
     });
   }
