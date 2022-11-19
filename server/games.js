@@ -6,7 +6,7 @@ const scopes = require("../data/users/scopes");
 const VerifyToken = require("../middleware/Token");
 const cookieParser = require("cookie-parser");
 
-const GamesRouter = () => {
+const GamesRouter = (io) => {
   let router = express();
 
   router.use(bodyParser.json({ limit: "100mb" }));
@@ -23,6 +23,10 @@ const GamesRouter = () => {
       Games.create(body)
         .then(() => {
           console.log("Created!");
+          io.sockets.emit('admin_notifications', {
+            message: 'Add new game',
+            key: 'Game'
+          });
           res.status(200);
           res.send(body);
           next();
@@ -38,7 +42,6 @@ const GamesRouter = () => {
     .get(
       Users.autorize([scopes.Admin, scopes.Member, scopes.NonMember]),
       function (req, res, next) {
-        console.log("get all games");
 
         const pageLimit = req.query.limit ? parseInt(req.query.limit) : 5;
         const pageSkip = req.query.skip
@@ -56,6 +59,7 @@ const GamesRouter = () => {
               auth: true,
               ...games
             };
+
             res.send(response);
             next();
           })

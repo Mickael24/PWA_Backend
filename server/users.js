@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 const User = require("../data/users/users");
 const Upload = require("../middleware/upload");
 
-const UsersRouter = () => {
+const UsersRouter = (io) => {
   let router = express();
 
   router.use(bodyParser.json({ limit: "100mb" }));
@@ -31,6 +31,10 @@ const UsersRouter = () => {
       console.log("Create user");
       Users.create(body)
         .then((user) => {
+          io.sockets.emit('admin_notifications', {
+            message: 'Add user',
+            key: 'User'
+          });
           res.status(200);
           res.send();
           next();
