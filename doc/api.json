@@ -1,0 +1,165 @@
+{
+  "swagger": "2.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Stadium Product API",
+    "description": "Rest API for products"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Products",
+      "description": "Rest API for products"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Login of User",
+        "parameters": [
+          {
+            "name": "body",
+            "type": "string",
+            "in": "body",
+            "required": true,
+            "description": "Name and Password to Login",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Master"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Master"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Login Correct",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": {
+                  "type": "boolean"
+                },
+                "token": {
+                  "type": "string"
+                }
+              }
+            },
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/games": {
+      "get": {
+        "tags": ["Games"],
+        "description": "Get All games",
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Games",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "array"
+                },
+                "pagination": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "put": {
+        "tags": ["Users"],
+        "description": "Update of User",
+        "parameters": [
+          {
+            "name": "userId",
+            "type": "string",
+            "in": "path",
+            "required": true,
+            "description": "Id of User",
+            "schema": {
+              "type": "string",
+              "properties": {
+                "name": {
+                  "type": "integer",
+                  "example": "Master"
+                }
+              }
+            }
+          },
+          {
+            "name": "body",
+            "type": "string",
+            "in": "body",
+            "required": true,
+            "description": "Data of User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "age": {
+                  "type": "age",
+                  "example": "12"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "UserUpdated",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": {
+                  "type": "boolean"
+                },
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
