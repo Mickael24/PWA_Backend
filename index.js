@@ -3,6 +3,8 @@ const http = require("http");
 const mongoose = require("mongoose");
 const path = require('path');
 const socketIo = require('socket.io');
+const swagguerUI = require('swagger-ui-express');
+const swaggerDocument = require('./doc/api.json');
 
 const config = require('./config');
 const hostname = "localhost";
@@ -34,6 +36,7 @@ io.on("connection", (socket) => {
 
 app.use(router.init(io));
 app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use('/api-docs', swagguerUI.serve, swagguerUI.setup(swaggerDocument));
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}`);
