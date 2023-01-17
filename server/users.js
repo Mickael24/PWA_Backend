@@ -78,8 +78,8 @@ const UsersRouter = (io) => {
 
   router
     .route("/:userId")
-    .put(Users.autorize([scopes.Admin]), function (req, res, next) {
-      console.log("update a member by id");
+    .put(Users.autorize([scopes.Admin, scopes.NonMember, scopes.Member]), function (req, res, next) {
+      console.log("update a user by id");
       let userId = req.params.userId;
       let body = req.body;
 
@@ -227,12 +227,11 @@ const UsersRouter = (io) => {
       }
     );
 
-  router
-    .route("/perfil")
+  router.route("/perfil")
     .get(
       Users.autorize([scopes.NonMember, scopes.Member]),
       function (req, res, next) {
-        console.log("get perfil of user");
+        console.log("get the perfil of user");
         // the id is get when the token has decoded
         let userId = req.id;
         Users.findUserById(userId)
@@ -249,7 +248,7 @@ const UsersRouter = (io) => {
             next();
           });
       }
-    );
+    )
 
   return router;
 };
